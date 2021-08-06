@@ -1,0 +1,19 @@
+# Template PHP Build
+# This template allows you to validate your PHP application.
+# The workflow allows running tests and code linting on the default branch.
+image: php:7.2-fpm
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: Test
+            script:
+              - apt-get update && apt-get install -y unzip gnupg ssh
+              -  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+              - composer install --no-scripts
+              - php -r "file_exists('.env') || copy('.env.pipelines', '.env');"
+              - php artisan key:generate
+              - apt-get -qq install git-ftp
+              - git ftp init --user $FTP_USERNAME --passwd $FTP_PASSWORD ftp://89.163.245.82/web/mgmt/
+            caches:
+              - composer
