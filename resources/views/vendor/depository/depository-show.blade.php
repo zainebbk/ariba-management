@@ -9,10 +9,10 @@
     <!--Page header-->
     <div class="page-header">
         <div class="page-leftheader">
-            <h4 class="page-title mb-0">Edit Manufacturer</h4>
+            <h4 class="page-title mb-0">Edit Depository</h4>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/"><i class="fe fe-layout  mr-2 fs-14"></i>Tables</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a href="">Update Manufacturer</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="">Update Depository</a></li>
             </ol>
         </div>
     </div>
@@ -24,7 +24,7 @@
         <div class="col-lg-12 col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Edit Manufacturer </h3>
+                    <h3 class="card-title">Edit Depository </h3>
                 </div>
                 <div class="card-body pb-2">
                     @if ($message = Session::get('success'))
@@ -43,27 +43,37 @@
                             </ul>
                         </div>
                     @endif
-                    <form action="{{ route('vendor-manufacturer-update',$id) }}" method='post' >
+
+                    <form action="{{ route('vendor-depository-update') }}" method='post'>
                         @csrf
                         <div class="expanel expanel-default">
                             <div class="expanel-heading">
-                                <h3 class="expanel-title" style="text-align: center">Manufacturer Informations
+                                <h3 class="expanel-title" style="text-align: center">Depository Informations
                                 </h3>
                             </div>
 
                             <div class="expanel-body">
                                 <div class="row row-sm">
                                     <div class="col-lg">
-                                        <label class="col-md-12 form-label">Manufacturer Name</label>
-                                        <input class="form-control mb-4" placeholder="Manufacturer Name" type="text"
-                                               name='name' value='{{ old('name') ?? $manufacturer->name }}'>
+                                        <label class="col-md-12 form-label">Depository Name</label>
+                                        <input class="form-control mb-4" placeholder="Depository Name" type="text"
+                                               name='name' value='{{ old('name') ?? $depository->name }}'>
+
+                                        <label class="col-md-12 form-label">Depository Address</label>
+                                        <input class="form-control mb-4" placeholder="Depository Address" type="text"
+                                               name='address' value='{{ old('name') ?? $depository->address }}'>
+
+                                        <label class="col-md-12 form-label">Depository Volume</label>
+                                        <input class="form-control mb-4" placeholder="Depository Volume" type="number"
+                                               name='volume' value='{{ old('name') ?? $depository->volume }}'>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
 
                         <div>
-                            <input type="submit" value="Save" name="action" class="btn btn-primary mt-4 mb-0">
+                            <input type="submit" value="Save" class="btn btn-primary mt-4 mb-0">
                         </div>
                     </form>
                 </div>

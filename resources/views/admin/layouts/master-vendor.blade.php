@@ -20,7 +20,7 @@
 		<!-- Page -->
 		<div class="page">
 			<div class="page-main">
-                    @include('admin.layouts.aside-menu-vendor')
+            @include('admin.layouts.aside-menu-vendor')
 				<!-- App-Content -->
 				<div class="app-content main-content">
 					<div class="side-app">

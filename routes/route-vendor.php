@@ -100,7 +100,7 @@ Route::group(['prefix' => 'vendor', 'middleware' => ['auth:vendor','verified','a
     Route::post('/manufacturer/add', 'ManufacturerController@addManufacturer')->name('vendor-manufacturer-add');
     Route::get('/manufacturer/{id?}', 'ManufacturerController@showUpdateManufacturer')->name('vendor-manufacturer-show');
     Route::post('/manufacturer/{id?}', 'ManufacturerController@updateManufacturer')->name('vendor-manufacturer-update');
-    
+
     //supplier
     Route::get('/supplier', 'SupplierController@supplier')->name('vendor-supplier-list');
     Route::get('/supplier/add', 'SupplierController@showAddSupplier')->name('show-vendor-supplier-add');
@@ -114,7 +114,7 @@ Route::group(['prefix' => 'vendor', 'middleware' => ['auth:vendor','verified','a
     Route::post('/category/add', 'CategoryController@addCategory')->name('vendor-category-add');
     Route::get('/category/{id?}', 'CategoryController@showUpdateCategory')->name('vendor-category-show');
     Route::post('/category/{id?}', 'CategoryController@updateCategory')->name('vendor-category-update');
- 
+
     //invoice
     Route::get('/invoice', 'InvoiceController@invoice')->name('vendor-invoice-list');
     Route::get('/invoice/{id?}', 'InvoiceController@showInvoice')->name('vendor-invoice-show');
@@ -131,7 +131,7 @@ Route::group(['prefix' => 'vendor', 'middleware' => ['auth:vendor','verified','a
     Route::get('/orders/setdelivery/{id}/{method}', 'OrderDepotController@SetDeliveyMethod')->name('vendor-order-depot-set-delivery');
     Route::get('/orders/removedelivery/{id}', 'OrderDepotController@RemoveDeliveyMethod')->name('vendor-order-depot-remove-delivery');
     // Route::post('/orders/delivery/{id}/ariba', 'OrderDepotController@SetDeliveyMethodAriba')->name('vendor-order-depot-delivery-ariba');
-   
+
     Route::get('/orders/courier', 'OrderDepotController@GetCourier')->name('vendor-order-depot-courier');
 
     Route::get('/orders/shipped/{id?}', 'OrderDepotController@OrderShowShipped')->name('vendor-order-depot-show-shipped');
@@ -141,7 +141,6 @@ Route::group(['prefix' => 'vendor', 'middleware' => ['auth:vendor','verified','a
     Route::post('/orders/shippe/{id?}', 'OrderDepotController@shippe')->name('vendor-order-depot-shippe');
     Route::post('/orders/finish/{id?}', 'OrderDepotController@finish')->name('show-vendor-order-depot-finish');
     Route::post('/order/cancel/{id?}', 'OrderDepotController@cancel')->name("vendor-order-depot-cancel");
-
     Route::get('/orders/finish/{id?}', 'OrderDepotController@finish')->name('vendor-order-depot-finish');
 
     // Vendor Stock
@@ -152,13 +151,24 @@ Route::group(['prefix' => 'vendor', 'middleware' => ['auth:vendor','verified','a
       Route::get('/stock/place_save', 'StockController@place_save')->name('vendor-place_save');
       Route::post('/stock/stock_save/{id?}', 'StockController@stock_save')->name('vendor-stock_save');
       Route::post('/stock/update_stocks/{id?}', 'StockController@update_stocks')->name('vendor-update_stocks');
+      Route::post('/stock/add', 'StockController@addDepository')->name('vendor-stock-depository-add');
+
+
+
+    //Depot
+      Route::get('/depository', 'DepositoryController@depository')->name('vendor-depository-list');
+      Route::get('/depository/add', 'DepositoryController@showAddDepository')->name('show-vendor-depository-add');
+      Route::post('/depository/add', 'DepositoryController@addDepository')->name('vendor-depository-add');
+      Route::get('/depository/{id?}', 'DepositoryController@showUpdateDepository')->name('vendor-depository-show');
+      Route::post('/depository/{id?}', 'DepositoryController@updateDepository')->name('vendor-depository-update');
+
 
     //Vendor Review
     Route::get('/review', 'ReviewVendorController@review')->name('vendor-review');
 
     //Product Review
     Route::get('/product/review', 'ReviewProductController@review')->name('vendor-product-review');
-    
+
 });
 
 Route::group(['prefix' => 'vendor', 'middleware' => ['auth:vendor','verified','active_user'],'namespace' =>'Vendor' ], function () {

@@ -144,6 +144,14 @@
                         </select>
                     </div>
 
+                    <div>
+                        <select class="form-control select2" name="product_stock['{{$loop->index}}'][depot]">
+                            @foreach ( $depot as $dp)
+                            <option value="{{$dp->name}}" {{ $dp->name == $dp->name ? 'selected' : '' }}>{{$dp->name}} </option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <input type="text" name="product_stock['{{$loop->index}}'][type]" class="form-control" id="type" @if($plc->type) value="Piece" @else value="Set" @endif >
 
                     <div>
@@ -170,6 +178,7 @@
 <!-----------  Add New Stock   -------------->
 
             <form action="{{ route('vendor-place_save') }}" method="get">
+
 
                 <div class="col-12 mt-5 mb-2">
                     <h3 class="card-title">New Stock</h3>
@@ -239,7 +248,7 @@
                         <div class="form-group col-md-6 mb-0">
 
                             <div class="form-group">
-                                <input type="number" class="form-control" id="name1" name="qte_place" placeholder="Quantity" min=1>
+                                <input type="number" class="form-control" id="name1" name="qte_place" placeholder="Quantity" value="1" min=1>
                             </div>
 
                         </div>
@@ -254,9 +263,37 @@
 
                             </div>
                         </div>
+                        <!-- <h6  style="margin-left: 490px;" type="button"  data-toggle="modal" data-target="#place"><i class="fa fa-plus-circle"></i>  Add a new Place</h6> -->
+
+
 
 
                     </div>
+                </div>
+
+                <!--------DEPOT------------->
+
+                <div class="card-header">
+                    <h3 class="mb-0 card-title">Choose a depository</h3>
+                </div>
+
+                <div class="card-body">
+                    <div class="form-row">
+
+                        <div class="form-group col-md-6 mb-0">
+                            <div class="form-group">
+                                <select class="search-box" name="depot" data-placeholder="Choose a depository">
+                                    @foreach ( $depot as $dp)
+                                    <option value="{{$dp->name}}">{{$dp->name}}</option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <h6  type="button"  data-toggle="modal" data-target="#depot"><i class="fa fa-plus-circle"></i>  Add a new Depository</h6>
+
                 </div>
 
                 <input type="text" name="product_id" value="{{ $id }}" hidden>
@@ -264,6 +301,50 @@
             </form>
         </div>
     </div>
+
+    <!--------- Depository Modal ------------>
+
+
+        <div  class="modal fade" id="depot" tabindex="-1" role="dialog" aria-labelledby="depotlabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add a new Depository</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form action="{{ route('vendor-stock-depository-add') }}" method='POST' role="form" enctype="multipart/form-data">
+                    @csrf
+                        <div class="modal-body">
+                            <div class="col-md-11">
+                                <div class="card-header">
+                                    <h3 class="mb-0 card-title">Depository Name</h3>
+                                </div>
+                                <input type='text' class='form-control' name='name' placeholder="Name">
+
+                                <div class="card-header">
+                                    <h3 class="mb-0 card-title">Depository Address</h3>
+                                </div>
+                                <input type='text' class='form-control' name='address' placeholder="Adress">
+
+                                <div class="card-header">
+                                    <h3 class="mb-0 card-title">Depository Volume</h3>
+                                </div>
+                                <input type='text' class='form-control' name='volume' placeholder="Volume">
+
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 </div>
 
 
@@ -288,6 +369,12 @@
             $('#piece').show();
         }
     });
+
 </script>
+<style>
+    h6 {
+        color: #6958BE;
+    }
+</style>
 
 @endsection

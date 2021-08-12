@@ -68,10 +68,18 @@ class StockController extends Controller
         LEFT JOIN oc_option_value_description o ON (o.option_value_id = op.option_value_id)
          LEFT JOIN oc_product pr ON (op.product_id = pr.product_id)
         where op.option_id = 13 and op.product_id=$id and language_id=1");
+<<<<<<< HEAD
+
+        // GET New Stock Added From DataBase
+        
+        $places = DB::table('product_place')->where('product_id', $id)->get();
+        
+=======
 
         // GET New Stock Added From DataBase
 
         $places = DB::table('product_place')->where('product_id', $id)->get();
+>>>>>>> 621e5726ebe2ff721881139194139c46b6dd63fd
 
         return view('admin.mains-admin.stock.product-show')->with([
 
@@ -163,8 +171,13 @@ class StockController extends Controller
         $date_add = Carbon::now();
 
         DB::insert(
+<<<<<<< HEAD
+            'insert into product_place (product_id,place,type, depot_name,quantity,option_value) values (?, ?, ?, ?, ?,?)',
+            [$product_id, $request->place, $request->type,"MyPapuci", $qte_place, $request->option]
+=======
             'insert into product_place (product_id,place,type, depot_id,quantity,option_value) values (?, ?, ?, ?, ?,?)',
             [$product_id, $request->place, $request->type, 1, $qte_place, $request->option]
+>>>>>>> 621e5726ebe2ff721881139194139c46b6dd63fd
         );
 
         $q = $request->input('q');

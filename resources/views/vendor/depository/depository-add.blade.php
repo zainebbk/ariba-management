@@ -4,15 +4,18 @@
     <link href="{{ URL::asset('assets/plugins/fancyuploder/fancy_fileupload.css') }}" rel="stylesheet" />
     <!-- INTERNAL File Uploads css-->
     <link href="{{ URL::asset('assets/plugins/fileupload/css/fileupload.css') }}" rel="stylesheet" type="text/css" />
+    <!--INTERNAL Select2 css -->
+    <link href="{{ URL::asset('assets/plugins/select2/select2.min.css') }}" rel="stylesheet" />
+
 @endsection
 @section('page-header')
     <!--Page header-->
     <div class="page-header">
         <div class="page-leftheader">
-            <h4 class="page-title mb-0">Edit Manufacturer</h4>
+            <h4 class="page-title mb-0">Create Depository</h4>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/"><i class="fe fe-layout  mr-2 fs-14"></i>Tables</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a href="">Update Manufacturer</a></li>
+                <li class="breadcrumb-item"><a href="{{route('vendor-depository-list')}}"><i class="fe fe-layout  mr-2 fs-14"></i>Depository</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="">Create</a></li>
             </ol>
         </div>
     </div>
@@ -24,7 +27,7 @@
         <div class="col-lg-12 col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Edit Manufacturer </h3>
+                    <h3 class="card-title">Add Depository </h3>
                 </div>
                 <div class="card-body pb-2">
                     @if ($message = Session::get('success'))
@@ -43,20 +46,28 @@
                             </ul>
                         </div>
                     @endif
-                    <form action="{{ route('vendor-manufacturer-update',$id) }}" method='post' >
+                    <form action="{{ route('vendor-depository-add') }}" method='POST' role="form" enctype="multipart/form-data">
                         @csrf
                         <div class="expanel expanel-default">
                             <div class="expanel-heading">
-                                <h3 class="expanel-title" style="text-align: center">Manufacturer Informations
+                                <h3 class="expanel-title" style="text-align: center">Depository Information
                                 </h3>
                             </div>
 
                             <div class="expanel-body">
                                 <div class="row row-sm">
                                     <div class="col-lg">
-                                        <label class="col-md-12 form-label">Manufacturer Name</label>
-                                        <input class="form-control mb-4" placeholder="Manufacturer Name" type="text"
-                                               name='name' value='{{ old('name') ?? $manufacturer->name }}'>
+                                        <label class="col-md-12 form-label">Depository Name</label>
+                                        <input class="form-control mb-4" placeholder="Depository Name" type="text"
+                                               name='name' value='{{ old('name') }}'>
+
+                                        <label class="col-md-12 form-label">Adress</label>
+                                        <input class="form-control mb-4" placeholder="Address" type="text"
+                                               name='address' value='{{ old('name') }}'>
+
+                                        <label class="col-md-12 form-label">Volume</label>
+                                        <input class="form-control mb-4" placeholder="Volume" type="text"
+                                               name='volume' value='{{ old('name') }}'>
                                     </div>
                                 </div>
                             </div>
@@ -72,6 +83,10 @@
     </div>
 @endsection
 @section('js')
+    <!-- INTERNAL Select2 js -->
+    <script src="{{ URL::asset('assets/plugins/select2/select2.full.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/select2.js') }}"></script>
+
     <!-- INTERNAL File uploads js -->
     <script src="{{ URL::asset('assets/plugins/fileupload/js/dropify.js') }}"></script>
     <script src="{{ URL::asset('assets/js/filupload.js') }}"></script>

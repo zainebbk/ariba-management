@@ -101,11 +101,11 @@ class StockController extends Controller
         FROM depot d
         left join oc_vendor ov ON (d.vendor_id = ov.vendor_id)
         where d.vendor_id=$this->vendor");
-       
+
         // GET New Stock Added From DataBase
 
-        $places = DB::table('product_place')->where('product_id', $request->product_id )->get();
-
+        $places = DB::table('product_place')->where('product_id', $id )->get();
+        // dd($places);
 
         return view('vendor.stock.product-show')->with([
 
@@ -128,12 +128,16 @@ class StockController extends Controller
         foreach ($request->product_stock as $stock) {
             if ($stock['type'] == 'Set')
                 DB::insert(
-                    'insert into product_place (product_id,place,type, depot_id,quantity,option_value) values (?, ?, ?, ?, ?,?)',
+
+                    'insert into product_place (product_id,place,type, depot_name,quantity,option_value) values (?, ?, ?, ?, ?,?)',
+
                     [$id, $stock['place'], $stock['type'], $stock['depot'], $stock['quantity'],null]
                 );
             else {
                 DB::insert(
-                    'insert into product_place (product_id,place,type, depot_id,quantity,option_value) values (?, ?, ?, ?, ?,?)',
+
+                    'insert into product_place (product_id,place,type, depot_name,quantity,option_value) values (?, ?, ?, ?, ?,?)',
+
                     [$id, $stock['place'], $stock['type'], $stock['depot'], $stock['quantity'], $stock['option_value']]
                 );
             }
@@ -197,13 +201,30 @@ class StockController extends Controller
         $date_add = Carbon::now();
 
         DB::insert(
-            'insert into product_place (product_id,place,type,depot_id, quantity,option_value) values (?, ?,?, ?, ?,?)',
-            [$product_id, $request->place, $request->type,1, $qte_place, $request->option]
+            'insert into product_place (product_id,place,type,depot_name, quantity,option_value) values (?, ?, ?, ?, ?,?)',
+            [$product_id, $request->place, $request->type,$request->depot, $qte_place, $request->option]
+
         );
 
         $q = $request->input('q');
         return redirect()->back()->with('success', 'The stock has been added successfully')->withInput();
     }
 
+
+
+    // ADD NEW DEPOSITORY
+
+    public function addDepository(Request $request)
+    {
+        // $validator = Validator::make($request->all(),['name'=>'required']);
+
+        DB::insert(
+            'insert into depot (depot_id,name,vendor_id,address,volume) values (?, ?, ?, ?,?)',
+            [$request->depot_id,$request->name,$this->vendor, $request->address,$request->volume]
+
+        );
+
+        return redirect()->back()->with('success', 'The record has been added successfully');
+    }
 
 }

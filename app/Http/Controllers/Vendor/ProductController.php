@@ -63,21 +63,39 @@ class ProductController extends Controller
 
     public function ShowAddproduct()
     {
+
+       //GET MANUFACTURERS
+
         $manufacturers = DB::table('oc_manufacturer', "m")
-            ->leftJoin("oc_vendor_to_manufacturer", "m.manufacturer_id", 'oc_vendor_to_manufacturer.manufacturer_id')
-            ->where("oc_vendor_to_manufacturer.vendor_id", $this->vendor)
-            ->get();
+        ->leftJoin("oc_vendor_to_manufacturer", "m.manufacturer_id", 'oc_vendor_to_manufacturer.manufacturer_id')
+        ->where("oc_vendor_to_manufacturer.vendor_id", $this->vendor)
+        ->get();
+
+        //GET SUPPLIERS
 
         $suppliers = DB::table('supplier')
         ->where("supplier.vendor_id", $this->vendor)
         ->get();
 
+        //GET DEPOSITORIES
+
+        $depot = DB::select("SELECT d.name, d.vendor_id, d.depot_id
+        FROM depot d
+        left join oc_vendor ov ON (d.vendor_id = ov.vendor_id)
+         where d.vendor_id=$this->vendor");
+
         $vendors = DB::select("SELECT * FROM oc_vendor");
+
+        //GET CATEGORIES
+
         $categories = DB::select("SELECT cp.category_id AS category_id, GROUP_CONCAT(cd1.name ORDER BY cp.level SEPARATOR ' > ')
          AS name, c1.parent_id, c1.sort_order FROM oc_category_path cp LEFT JOIN oc_category c1 ON (cp.category_id = c1.category_id)
          LEFT JOIN oc_category c2 ON (cp.path_id = c2.category_id) LEFT JOIN oc_category_description cd1 ON (cp.path_id = cd1.category_id)
          LEFT JOIN oc_category_description cd2 ON (cp.category_id = cd2.category_id) WHERE cd1.language_id = '1' AND cd2.language_id = '1'
         and c1.status=1 and c2.status=1 GROUP BY cp.category_id,c1.parent_id,c1.sort_order ORDER BY name ASC;");
+
+
+        //GET FILTERS
 
         $filters = DB::select("SELECT f.filter_id, CONCAT(fgd.name, ' > ', fd.name) as name  FROM oc_filter_group_description fgd ,
          oc_filter f LEFT JOIN oc_filter_description fd ON (f.filter_id = fd.filter_id) WHERE
@@ -92,8 +110,12 @@ class ProductController extends Controller
 
         return view('vendor.product.product-add')->with("data", [
             'manufacturers' => $manufacturers,
-            'categories' => $categories, 'vendors' => $vendors, 
-            'filters' => $filters, 'ean' => $ean,'suppliers'=>$suppliers
+            'categories' => $categories,
+            'vendors' => $vendors,
+            'filters' => $filters,
+            'ean' => $ean,
+            'suppliers'=>$suppliers,
+            'depot' => $depot
         ]);
     }
 
@@ -129,10 +151,10 @@ class ProductController extends Controller
             $stock_status_id=6;
         }
 
-        $new_category=null;          
-        foreach ($request->categories as $category) {    
+        $new_category=null;
+        foreach ($request->categories as $category) {
             if($category=='not_found'){
-                $new_category=$request->new_category;   
+                $new_category=$request->new_category;
             }
         }
         //Store in product
@@ -151,6 +173,7 @@ class ProductController extends Controller
             'estimated_day' => $request->estimated_day,
             'image' => $imageName ?? "none",
             'date_available' => now(),
+            'depot_id' => $request->depot_id,
             'manufacturer_id' => $request->manufacturer_id,
             'supplier_id' => $request->supplier_id,
             'status' => 0,
@@ -184,7 +207,7 @@ class ProductController extends Controller
             ['name' => $request->name_3 ?? '', 'description' => $request->description_3 ?? '', 'meta_title' => $request->name_3 ?? '', 'language_id' => 2, 'product_id' => $id, 'tag' => '', 'meta_description' => '', "meta_keyword" => '']
         ]);
 
-     
+
         //Store categories
         if($new_category==null){
             foreach ($request->categories as $category) {
@@ -211,7 +234,7 @@ class ProductController extends Controller
                 }
 			}
 		}
-        
+
         //Store product to vendor
         DB::table('oc_vendor_to_product')->insert([
             'vendor_id' => $this->vendor, 'product_id' => $id
@@ -280,7 +303,7 @@ class ProductController extends Controller
             'ciopean' => $ean ?? '',
         ]);
     }
-    
+
     public function ShowUpdateProduct($id)
     {
         $product = DB::select("SELECT * FROM oc_product p
@@ -301,7 +324,12 @@ class ProductController extends Controller
         $suppliers = DB::table('supplier')
         ->where("supplier.vendor_id", $this->vendor)
         ->get();
-    
+
+        $depot = DB::select("SELECT d.name, d.vendor_id, d.depot_id
+        FROM depot d
+        left join oc_vendor ov ON (d.vendor_id = ov.vendor_id)
+         where d.vendor_id=$this->vendor");
+
         $vendors = DB::select("SELECT * FROM oc_vendor");
 
         $categories = DB::select("SELECT cp.category_id AS category_id, GROUP_CONCAT(cd1.name ORDER BY cp.level SEPARATOR ' > ') AS name,
@@ -332,6 +360,7 @@ class ProductController extends Controller
             'productCategories' => $productCategories, 'images' => $images, 'filters' => $filters,
             'productFilters' => $productFilters, 'options' => $options, 'option_id' => $option_id,
              'discounts' => $discounts,'suppliers'=>$suppliers,
+             'depot' =>$depot
         ]);
     }
 
@@ -401,6 +430,7 @@ class ProductController extends Controller
             'length' => $request->length ?? 0,
             'width' => $request->width ?? 0,
             'supplier_id' => $request->supplier_id,
+            'depot_id' =>$request->depot_id,
             'sort_order' => $request->sort_order ?? 0,
             'min_order'=>$request->min_order ?? 0,
             'stock_status_id' => $stock_status_id,

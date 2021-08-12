@@ -219,17 +219,26 @@
                                         </div>
 
                                         <div class="row row-sm">
-                                            <div class="col-lg mt-4">
-                                                <label class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input mb-4" name="stock_status_id" value="option1" >
-                                                    <span class="custom-control-label">Pre-order</span>
-                                                </label>
-                                             </div>
+
                                              <div class="col-lg-3">
                                                 <label class="col-md-12 form-label">Estimated Time (pre-order days)*</label>
                                                 <input class="form-control mb-4" placeholder="estimated day" type="number" value="1"
                                                     name='estimated_day' min=1>
                                             </div>
+
+                                            <div class="col-lg">
+                                                <label class="col-md-12 form-label">Depository</label>
+                                                <div class="col-md-12">
+                                                    <select class="search-box" name="depot" data-placeholder="Choose a depository">
+                                                        @foreach ( $data['depot'] as $dp)
+                                                            <option value="{{$dp->name}}">{{$dp->name}}</option>
+                                                                @endforeach
+                                                    </select>
+                                                    <a  class="modal-effect" href='#'
+                                                    data-effect="effect-scale"  data-toggle="modal" data-target="#depot" style="color:#705ec8"><i class="fa fa-plus-circle"></i>   Add depository</a>
+                                                </div>
+                                            </div>
+
                                              <div class="col-lg">
                                                 <label class="col-md-12 form-label">Supplier (optional)</label>
                                                 <div class="col-md-12">
@@ -241,7 +250,7 @@
                                                         @endforeach
                                                     </select>
                                                     <a  class="modal-effect" href='#'
-                                                    data-effect="effect-scale" data-target="#add_supplier" data-toggle="modal" style="text-decoration: underline;color:#705ec8">Add supplier</a>
+                                                    data-effect="effect-scale" data-target="#add_supplier" data-toggle="modal" style="color:#705ec8"><i class="fa fa-plus-circle"></i>   Add supplier</a>
                                                 </div>
                                             </div>
 
@@ -255,9 +264,9 @@
                                                         @endforeach
                                                     </select>
                                                     <a  class="modal-effect" href='#'
-                                                    data-effect="effect-scale" data-target="#add_manufacturer" data-toggle="modal" style="text-decoration: underline;color:#705ec8">Add manufacturer</a>
+                                                    data-effect="effect-scale" data-target="#add_manufacturer" data-toggle="modal" style="color:#705ec8"><i class="fa fa-plus-circle"></i>    Add manufacturer</a>
                                                 </div>
-                                                
+
                                             </div>
 
                                         </div>
@@ -267,6 +276,13 @@
                                                 <label class="col-md-12 form-label  mt-2">Main Image</label>
                                                 <input type="file" class="dropify mt-2" name='image' data-height="130" />
                                             </div>
+
+                                            <div class="col-lg mt-4">
+                                                <label class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input mb-4" name="stock_status_id" value="option1" >
+                                                    <span class="custom-control-label">Pre-order</span>
+                                                </label>
+                                             </div>
                                         </div>
                                     </div>
                                     <!-- END-DATA TAB -->
@@ -301,7 +317,7 @@
                                                 <div class="form-group row">
                                                     <div class="col-md-12">
                                                         <label class="col-md-12 form-label">Filters*</label>
-                                                        <select multiple="multiple" 
+                                                        <select multiple="multiple"
                                                             class="search-box" name="filters[]">
                                                             @foreach ($data['filters'] as $filter)
                                                                 <option value="{{ $filter->filter_id }}">
@@ -321,7 +337,7 @@
                                                 <input class="form-control mb-4" placeholder="set" type="number" value="1"
                                                     name='min_order' min=1>
                                             </div>
-                                            
+
                                             <div class="col-lg">
                                                 <label class="col-md-12 form-label">Option*</label>
                                                 <select class="form-control select2" name="option">
@@ -330,7 +346,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="row row-sm">
                                             <div class="card-header">
                                                 <h3 class="card-title">Specification</h3>
@@ -640,7 +656,7 @@
                                                 </thead>
                                                 <tbody>
                                                 </tbody>
-                            
+
                                                 <tfoot>
                                                 <tr>
                                                     <td colspan="5"></td>
@@ -687,62 +703,101 @@
         </div>
     </div>
 
+    <!-- Add depository -->
+
+    <div  class="modal fade" id="depot" tabindex="-1" role="dialog" aria-labelledby="depotlabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add a new Depository</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="alert alert-danger error_container" style="display: none">
+                                <ul id="error-validation">
+                                </ul>
+                            </div>
+
+                    <form action="{{ route('vendor-stock-depository-add') }}" method='POST' role="form" enctype="multipart/form-data">
+                    @csrf
+                        <div class="modal-body">
+                            <div class="col-md-11">
+                                <div class="card-header">
+                                    <h3 class="mb-0 card-title">Depository Name</h3>
+                                </div>
+                                <input type='text' class='form-control' name='name' placeholder="Name">
+
+                                <div class="card-header">
+                                    <h3 class="mb-0 card-title">Depository Address</h3>
+                                </div>
+                                <input type='text' class='form-control' name='address' placeholder="Adress">
+
+                                <div class="card-header">
+                                    <h3 class="mb-0 card-title">Depository Volume</h3>
+                                </div>
+                                <input type='text' class='form-control' name='volume' placeholder="Volume">
+
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
       <!-- Add supplier -->
+
     <div class="modal" id="add_supplier">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
 
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="smallmodal1">Add Supplier</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="smallmodal1">Add Supplier</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+
                             <div class="alert alert-success success_container" style="display: none">
-                                supplier has been added successfully
+                                Supplier has been added successfully
                             </div>
 
                             <div class="alert alert-danger error_container" style="display: none">
                                 <ul id="error-validation">
                                 </ul>
                             </div>
-                     
-                        <div class="expanel expanel-default">
-                            <div class="expanel-heading">
-                                <h3 class="expanel-title" style="text-align: center">Supplier Informations
-                                </h3>
-                            </div>
 
-                            <div class="expanel-body supplier">
-                                <div class="row row-sm">
-                                    <div class="col-lg">
-                                        <label class="col-md-12 form-label">First Name</label>
-                                        <input class="form-control mb-4" placeholder="firstame" type="text"
-                                                name='firstname' value='{{ old('firstname') }}'>
+                                <div class="expanel-body supplier">
+                                    <div class="col-md-11">
+                                        <div class="card-header">
+                                            <h3 class="mb-0 card-title">First Name</h3>
+                                        </div>
+                                        <input type='text' class='form-control' value='{{ old('firstname') }}' name='firstname' placeholder="first name" >
+
+                                        <div class="card-header">
+                                            <h3 class="mb-0 card-title">Last name</h3>
+                                        </div>
+                                        <input type='text' class='form-control' value='{{ old('lastname') }}' name='lastname' placeholder="last name" >
+
+                                        <div class="card-header">
+                                            <h3 class="mb-0 card-title">Email</h3>
+                                        </div>
+                                        <input type='email' class='form-control'value='{{ old('email') }}' name='email' placeholder="email">
                                     </div>
                                 </div>
-                                <div class="row row-sm">
-                                    <div class="col-lg">
-                                        <label class="col-md-12 form-label">Last Name</label>
-                                        <input class="form-control mb-4" placeholder="lastname" type="text"
-                                                name='lastname' value='{{ old('lastname') }}'>
-                                    </div>
-                                </div>
-                                <div class="row row-sm">
-                                    <div class="col-lg">
-                                        <label class="col-md-12 form-label">Email</label>
-                                        <input class="form-control mb-4" placeholder="email" type="email"
-                                                name='email' value='{{ old('email') }}'>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary"  id="save_supplier">Add</button>
-                    </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="save_supplier">Add</button>
+                        </div>
             </div>
         </div>
     </div>
@@ -759,7 +814,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                            <div class="alert alert-success success_container" style="display: none">
+                             <div class="alert alert-success success_container" style="display: none">
                                 Manufacturer has been added successfully
                             </div>
 
@@ -767,23 +822,14 @@
                                 <ul id="error-validation">
                                 </ul>
                             </div>
-                     
-                        <div class="expanel expanel-default">
-                            <div class="expanel-heading">
-                                <h3 class="expanel-title" style="text-align: center">Manufacturer Informations
-                                </h3>
-                            </div>
 
                             <div class="expanel-body supplier">
-                                <div class="row row-sm">
-                                    <div class="col-lg">
-                                        <label class="col-md-12 form-label">Name</label>
-                                        <input class="form-control mb-4" placeholder="firstame" type="text"
-                                                name='name' value='{{ old('name') }}'>
+                                <div class="col-md-11">
+                                    <div class="card-header">
+                                         <h3 class="mb-0 card-title">Name</h3>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                    <input type='text' class='form-control' value='{{ old('name') }}' name='name' placeholder="name" >
+                                 </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -796,7 +842,7 @@
 @endsection
 @section('js')
     <script type="text/javascript">
-        
+
         var discount_row = 0;
         function addDiscount() {
             html = '<tr id="discount-row' + discount_row + '">';
@@ -813,7 +859,7 @@
             discount_row++;
         }
 
-       
+
     </script>
 
     <script>
@@ -840,6 +886,8 @@
             return true;
         });
 
+        //Supplier
+
         $(document).on('click', '#save_supplier', function(e) {
             e.preventDefault();
             var firstname=$('.supplier input[name="firstname"]').val();
@@ -861,7 +909,7 @@
                                 html += '<option value="' + json['result'][i]['supplier_id'] + '"';
                                 html += '>' + json['result'][i]['firstname'] +' '+json['result'][i]['lastname']+'</option>';
                             }
-                        } 
+                        }
 
                     $('select[name=\'supplier_id\']').html(html);
                     $( "#add_supplier" ).modal('hide');
@@ -879,6 +927,8 @@
                 }
             });
         });
+
+        //Manufacturer
 
         $(document).on('click', '#save_manufacturer', function(e) {
             e.preventDefault();
@@ -899,7 +949,7 @@
                                 html += '<option value="' + json['result'][i]['manufacturer_id'] + '"';
                                 html += '>' + json['result'][i]['name']+'</option>';
                             }
-                        } 
+                        }
 
                     $('select[name=\'manufacturer_id\']').html(html);
                     $( "#add_manufacturer" ).modal('hide');
@@ -952,7 +1002,7 @@
                 $('#shoes').hide();
             }
         });
- 
+
         $(function() {
             $('#mySelect').change(function() {
                 if (this.value == "not_found") {
@@ -960,7 +1010,7 @@
                     $('.to_disable').attr('disabled', true);
                     $('.to_disable').addClass('disabled');
                     $('#newCategory').css('display','block');
-                } 
+                }
                 else {
                     $('.to_disable').attr('disabled', false);
                     $('.to_disable').removeClass('disabled');
@@ -971,7 +1021,7 @@
     </script>
 
 
-   
+
 
     <!-- INTERNAL File uploads js -->
     <script src="{{ URL::asset('assets/plugins/fileupload/js/dropify.js') }}"></script>

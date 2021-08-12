@@ -114,11 +114,11 @@
 
             <li class="slide mt-3">
                 <a class="side-menu__item" data-toggle="slide">
-                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" 
+                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
                         fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/>
                         <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0
-                        1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zm-.5 1.5l1.96 2.5H17V9.5h2.5zM6 18c-.55 
-                        0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm2.22-3c-.55-.61-1.33-1-2.22-1s-1.67.39-2.22 
+                        1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zm-.5 1.5l1.96 2.5H17V9.5h2.5zM6 18c-.55
+                        0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm2.22-3c-.55-.61-1.33-1-2.22-1s-1.67.39-2.22
                         1H3V6h12v9H8.22zM18 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
                     </svg>
                     <span class="side-menu__label">Delivery</span><i class="angle fa fa-angle-right"></i>
@@ -144,6 +144,27 @@
                     </li>
                 </ul>
             </li>
+
+            <!----- Depository ------>
+
+            <li class="slide mt-3">
+                <a class="side-menu__item" data-toggle="slide">
+                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24"
+                         width="24">
+                        <path d="M0 0h24v24H0V0z" fill="none"/>
+                        <path
+                            d="M15 11V5l-3-3-3 3v2H3v14h18V11h-6zm-8 8H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm6 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm6 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/>
+                    </svg>
+                    <span class="side-menu__label">Depository</span><i class="angle fa fa-angle-right"></i>
+                </a>
+                <ul class="slide-menu">
+                    <li>
+                        <a class="slide-item" href="{{ url('/vendor/depository') }}">Depository</a>
+                    </li>
+                </ul>
+            </li>
+
+             <!----- Manufacturer ------>
 
             <li class="slide mt-3">
                 <a class="side-menu__item" data-toggle="slide">
@@ -173,7 +194,7 @@
                     </li>
                 </ul>
             </li>
-            
+
             <li class="slide mt-3">
                 <a class="side-menu__item" data-toggle="slide">
                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg"
@@ -207,12 +228,12 @@
                 </a>
                 <ul class="slide-menu">
                     <li>
-                      
+
                         <a class="slide-item" href="{{ url('/vendor/stock/search-product') }}">Stock Management</a>
                     </li>
                 </ul>
             </li>
-        
+
         </ul>
     </aside>
     <!--aside closed-->
